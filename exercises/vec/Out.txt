@@ -1,0 +1,7 @@
+Hello world!
+Operations using vec1 (x=1, y=2, z=3) and vec2 (x=4, y=5, z=6)
+scalar = 2 4 6
+plus = 5 7 9
+minus = -3 -3 -3
+dot = 32
+vec1 to string = 1 2 3

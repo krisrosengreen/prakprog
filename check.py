@@ -8,9 +8,7 @@ EXERCISE_FOLDER = "exercises/"
 HOMEWORKS_FOLDER = "homeworks/"
 
 site_content = requests.get(SITE).text
-
 soup = bs(site_content, features="html5lib")
-
 lectures = soup.find_all("li", {"style": "color:black"})
 
 def extract_folder_name(link):
@@ -21,7 +19,6 @@ homeworks = []
 
 for lecture in lectures:
     links = lecture.find_all("a")
-
     for link in links:
         if link.has_attr("href"):
             href_content = link["href"]
@@ -48,9 +45,20 @@ def warning(s):
 def error(s):
     print(colored(s, 'red'))
 
+def good(s):
+    print(colored(s, 'green'))
+
 def underline(s):
     print(s)
     print('―'*len(s))
+
+def file_tab_print(filepath):
+    with open(filepath, 'r') as f:
+        content = f.read().strip()
+    adj = list(map(lambda i: "\t* " + i, content.split("\n")))
+    print()
+    print("\n".join(adj))
+    print()
 
 spacing = 10
 
@@ -63,6 +71,9 @@ for exercise in exercises:
             error(f" - {exercise: <{spacing}} does not pass min requirements!")
         elif check_no_missing(EXERCISE_FOLDER + exercise):
             warning(f" - {exercise: <{spacing}} has a MISSING file!")
+            file_tab_print(EXERCISE_FOLDER + exercise + "/MISSING")
+        else:
+            good(f" - {exercise: <{spacing}} passes")
 
 print()
 underline(f"Homeworks ({len(current_homeworks)}/{len(homeworks)})")
@@ -74,3 +85,6 @@ for homework in homeworks:
             error(f" - {homework: <{spacing}} does not pass min requirements!")
         elif check_no_missing(HOMEWORKS_FOLDER+ homework):
             warning(f" - {homework: <{spacing}} has a MISSING file!")
+            file_tab_print(HOMEWORKS_FOLDER + homework + "/MISSING")
+        else:
+            good(f" - {homework: <{spacing}} passes")
