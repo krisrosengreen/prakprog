@@ -14,6 +14,6 @@ if len(sys.argv) == 2:
     total = exercises + homeworks
     L_res = list(filter(lambda i: sys.argv[1] in i, total))
 
-    os.system("firefox " + base_url + L_res[0] + ".htm")
+    os.popen("firefox " + base_url + L_res[0] + ".htm")
 else:
     print("Incorrect format")

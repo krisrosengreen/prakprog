@@ -3,47 +3,41 @@ using System.Threading;
 using static System.Console;
 
 public static class main {
-  static double[] sum;
+  public class data { public int a,b; public double sum;}
 
-  static void harm_sum(int fro, int to, int thread_id) {
-
-    double inner_sum = 0;
-    for (int i = fro; i < to; i++){
-      inner_sum += 1.0/i;
-    }
-
-    sum[thread_id] = inner_sum;
-    Write($"Thread done! sum {inner_sum} from {fro} to {to} id {thread_id}\n");
+  public static void harmonic(object obj){
+    var local = (data)obj;
+    local.sum=0;
+    for(int i=local.a;i<local.b;i++) local.sum+=1.0/i;
   }
 
-  static void Main() {
-    harm_sum_threading();
-  }
+  public static void Main(string[] args) {
+    int nthreads = 1, nterms = (int)1e8; /* default values */
 
-  static void harm_sum_threading() {
-    int num_threads = 10;
-    int range_thread = 1000;
-    sum = new double[num_threads+1];
-
-    Thread[] ts = new Thread[num_threads];
-
-    for (int i = 0; i < num_threads; i++) {
-      ts[i] = new Thread(() => harm_sum(i*range_thread+1, i*range_thread + range_thread, i));
-      ts[i].Start();
+    foreach(var arg in args) {
+     var words = arg.Split(':');
+     if(words[0]=="-threads") nthreads=int.Parse(words[1]);
+     if(words[0]=="-terms"  ) nterms  =(int)float.Parse(words[1]);
     }
 
-    for (int i = 0; i < num_threads; i++) {
-      ts[i].Join();
+    data[] x = new data[nthreads];
+    for(int i=0;i<nthreads;i++) {
+       x[i]= new data();
+       x[i].a = 1 + nterms/nthreads*i;
+       x[i].b = 1 + nterms/nthreads*(i+1);
+    }
+    x[x.Length-1].b=nterms+1; /* the enpoint might need adjustment */
+
+    var threads = new Thread[nthreads];
+    for(int i=0;i<nthreads;i++) {
+      threads[i] = new Thread(harm); /* create a thread */
+      threads[i].Start(x[i]);        /* run it with x[i] as argument to "harmonic" */
     }
 
-    /*
-    Thread t1 = new Thread(() => harm_sum(1,100));
-    t1.Start();
-    t1.Join();
-    */
+    for(int i=0;i<nthreads;i++) threads[i].Join();
 
-    foreach(double d in sum) {
-      Write($"val = {d}\n");
-    }
+    for(int i=0;i<nthreads;i++) sum+=x[i].sum;
+
+    double sum=0; Parallel.For( 1, N+1, delegate(int i){sum+=1.0/i;} );
   }
 }

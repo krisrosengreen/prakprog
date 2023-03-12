@@ -1,9 +1,10 @@
-Out.txt: main.exe
-	mono main.exe > Out.txt
+Out.txt: main.exe inputfile
+	mono $(addprefix -r:,${shell ls | grep ".dll"}) main.exe < inputfile > Out.txt
 	cat Out.txt
 
 main.exe: main.cs
 	mcs main.cs
 
-clean:
-	rm Out.txt main.exe
+clear:
+	rm main.exe
+	rm Out.txt
