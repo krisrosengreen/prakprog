@@ -13,4 +13,6 @@
 The x-vector:
       1.45     -0.653      0.959 
         -1          7          2 
+Determinant stuff
+Determinant: 121
 Calculate the inverse!

@@ -32,6 +32,14 @@ public class QRGS{
     return c;
   }
 
+  public double det() {
+    double prodded = 1;
+    for (int i = 0; i < this.R.size1; i++) {
+      prodded *= this.R[i,i];
+    }
+    return prodded;
+  }
+
   public matrix inverse() {
     // Ax=QRx=b
     // Rx=Q^T b
@@ -47,13 +55,16 @@ public class QRGS{
     
     matrix id = matrix.id(this.R.size2);
     matrix Rinv = new matrix(this.R.size1, this.R.size2);
-
     Rinv[0] = QRGS.backsub(this.R, id[0]);
     Rinv[1] = QRGS.backsub(this.R, id[1]);
     Rinv[2] = QRGS.backsub(this.R, id[2]);
     
+    //Step 2
+
     matrix Ainv = Rinv*this.Q.T;
     matrix id_from_Ainv = Ainv * (this.Q*this.R);
+
+    //Step 3
 
     return Ainv;
   }

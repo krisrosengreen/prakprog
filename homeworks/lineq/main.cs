@@ -5,6 +5,21 @@ using System.Linq;
 using System.Collections.Generic;
 
 public class MainClass {
+
+  static matrix RandomMatrix(int size) {
+    Random rnd = new Random();
+
+    matrix mat = new matrix(size, size);
+
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
+        mat[i, j] = rnd.Next(1,1003);
+      }
+    }
+
+    return mat;
+  }
+
   public static void Main(String[] args) {
     if (args.Length == 0) {
       char[] split_delimiters = {' ', '\t', '\n'};
@@ -49,8 +64,24 @@ public class MainClass {
       vector b_through_A = A*x;
       b_through_A.print();
 
+      Write("Determinant stuff\n");
+
+      Write($"Determinant: {qr.det()}\n");
+
       Write("Calculate the inverse!\n");
       qr.inverse();
+    } else {
+      foreach(string arg in args) {
+        if (arg.Contains("-size:")) {
+          int size = int.Parse(arg.Split(":")[1]);
+          Write($"Size: {size}\n");
+
+          matrix m = RandomMatrix(size);
+          QRGS qr = new QRGS(m);
+
+          Write($"Done!\n");
+        }
+      }
     }
   }
 
