@@ -8,6 +8,7 @@ public class vector {
     get => data[i];        // getter
     set => data[i]=value;  // setter
   }
+
   public vector(int n){        // constructor
       data=new double[n];
   }
@@ -32,9 +33,7 @@ public class vector {
   }
 
   public double dot(vector a) {
-    if (this.size != a.size) {
-      throw new Exception("Vectors are not of equal size!");
-    }
+    if (this.size != a.size) throw new Exception("Vectors are not of equal size!");
 
     double dotted = 0;
 
@@ -65,6 +64,16 @@ public class vector {
     }
 
     return new_vec;
+  }
+
+  public vector copy() {
+    vector nvec = new vector(this.size);
+
+    for (int i = 0; i < nvec.size; i++) {
+      nvec[i] = this[i];
+    }
+
+    return nvec;
   }
 
   public void print() {
@@ -116,6 +125,22 @@ public class matrix{
     return nm;
   }
 
+  public static vector operator *(matrix a, vector b) {
+    vector nvec = new vector(a.size1);
+
+    for (int i = 0; i < a.size1; i ++){
+      double summed = 0;
+
+      for (int j = 0; j < a.size2; j++) {
+        summed += a[i, j]*b[j];
+      }
+
+      nvec[i] = summed; 
+    }
+
+    return nvec;
+  }
+
   public vector this[int i] {
     get {
       if (i >= size1) throw new Exception("The matrix index is greater than matrix size!");
@@ -130,7 +155,7 @@ public class matrix{
 
     set {
       if (i >= size1) throw new Exception("The matrix index is greater than matrix size!");
-      if (value.size != size1) throw new Exception("Could not set matrix row. Sizes are not equal!");
+      if (value.size != size2) throw new Exception("Could not set matrix row. Sizes are not equal!");
 
       for (int j = 0; j < this.size2; j++) {
         this[i, j] = value[j];
@@ -160,7 +185,7 @@ public class matrix{
     Write("\n");
   }
 
-  public matrix T() {
+  public matrix transpose() {
     matrix transt = new matrix(this.size1, this.size2);
 
     for (int i = 0; i < this.size1; i++) {
@@ -171,4 +196,12 @@ public class matrix{
 
     return transt;
   }
+
+  public matrix T{
+    get {
+      return transpose();
+    }
+    set{}
+  }
+
 }
