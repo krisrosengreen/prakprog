@@ -62,7 +62,6 @@ public class QRGS{
     //Step 2
 
     matrix Ainv = Rinv*this.Q.T;
-    matrix id_from_Ainv = Ainv * (this.Q*this.R);
 
     //Step 3
 

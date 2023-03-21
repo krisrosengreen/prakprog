@@ -7,9 +7,12 @@ Out.txt: main.exe
 	mono main.exe < inputfile > Out.txt
 	cat Out.txt
 
+img.png: out.times.data plot.gnu
+	gnuplot plot.gnu
+
 out.times.data: main.exe
 	>$@
-	for N in $$(seq 100 20 200); do \
+	for N in $$(seq 100 20 600); do \
 		time --format "$$N %e" --output $@ --append \
 		mono $< -size:$$N 1>out 2>err ;\
 	done
@@ -24,4 +27,4 @@ matrix.dll: $(MATRIXDIR)/matrix.cs $(MATRIXDIR)/vector.cs
 	$(MAKEDLL) 
 
 clean:
-	rm -r *.dll *.txt *.exe
+	rm -r *.dll *.txt *.exe *.log err *.png out out.times.data
