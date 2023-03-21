@@ -1,20 +1,20 @@
 MATLIB = ~/prakprog/matlib
 MATRIXDIR = $(MATLIB)/matrix
 DLLS = $(addprefix -r:,$(filter %.dll,$^))
+MAKEDLL = mcs -t:library -out:$@ $(filter %.cs,$^)
 
 Out.txt: main.exe
 	mono main.exe < inputfile > Out.txt
 	cat Out.txt
 
-main.exe: main.cs matrix.dll
+main.exe: main.cs matrix.dll QRGS.dll
 	mcs main.cs $(DLLS)
 
-mymatlib.dll: mymatlib.cs
-	mcs -t:library mymatlib.cs
+QRGS.dll: QRGS.cs matrix.dll
+	$(MAKEDLL) $(DLLS)
 
 matrix.dll: $(MATRIXDIR)/matrix.cs $(MATRIXDIR)/vector.cs
-	mcs -t:library -out:$@ $^
+	$(MAKEDLL) 
 
-clear:
-	rm main.exe
-	rm Out.txt
+clean:
+	rm -r *.dll *.txt *.exe
