@@ -36,32 +36,39 @@ public class ODE {
 		return (yh,er);
 	}
 
-	public static (genlist<double>,genlist<vector>) driver(
+	public static vector driver(
 		Func<double,vector,vector> f, /* the f from dy/dx=f(x,y) */
 		double a,                    /* the start-point a */
 		vector ya,                   /* y(a) */
 		double b,                    /* the end-point of the integration */
 		double h=0.01,               /* initial step-size */
 		double acc=0.01,             /* absolute accuracy goal */
-		double eps=0.01              /* relative accuracy goal */
+		double eps=0.01,              /* relative accuracy goal */
+		genlist<double> xlist=null,
+		genlist<vector> ylist=null
 	){
-	if(a>b) throw new ArgumentException("driver: a>b");
-	double x=a; vector y=ya.copy();
-	var xlist=new genlist<double>(); xlist.add(x);
-	var ylist=new genlist<vector>(); ylist.add(y);
-	do      {
-					if(x>=b) return (xlist,ylist); /* job done */
-					if(x+h>b) h=b-x;               /* last step should end at b */
-					var (yh,erv) = rkstep12(f,x,y,h);
-					double tol = (acc+eps*yh.norm()) * Sqrt(h/(b-a));
-					double err = erv.norm();
-					if(err<=tol){ // accept step
-			x+=h; y=yh;
-			xlist.add(x);
-			ylist.add(y);
+		if(a>b) throw new ArgumentException("driver: a>b");
+		double x=a; vector y=ya.copy();
+
+		if (xlist != null) xlist.add(x);
+		if (ylist != null) ylist.add(y);
+
+		do {
+			if(x>=b) {
+				return y;
 			}
-		h *= Min( Pow(tol/err,0.25)*0.95 , 2); // reajust stepsize
-					}while(true);
+
+			if(x+h>b) h=b-x;               /* last step should end at b */
+			var (yh,erv) = rkstep12(f,x,y,h);
+			double tol = (acc+eps*yh.norm()) * Sqrt(h/(b-a));
+			double err = erv.norm();
+			if(err<=tol){ // accept step
+				x+=h; y=yh;
+				if (xlist != null) xlist.add(x);
+				if (ylist != null) ylist.add(y);
+			}
+			h *= Min( Pow(tol/err,0.25)*0.95 , 2); // reajust stepsize
+		}while(true);
 	}//driver
 
 	// u'=x
@@ -87,7 +94,10 @@ public class ODE {
 
 
   public static void Main() {
-		(genlist<double> a, genlist<vector> b) = driver(pendulum_ode, 0, new vector(PI - 0.1, 0.0), 101);
+		genlist<double> a = new genlist<double>();
+		genlist<vector> b = new genlist<vector>();
+
+		vector ys = driver(pendulum_ode, 0, new vector(PI - 0.1, 0.0), 101, xlist: a, ylist: b);
 
 		for (int i = 0; i < a.size; i++) {
 			Console.WriteLine($"{a[i]},{b[i][0]},{b[i][1]}");
