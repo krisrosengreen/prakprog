@@ -60,6 +60,8 @@ public class ODE {
 
 			if(x+h>b) h=b-x;               /* last step should end at b */
 			var (yh,erv) = rkstep12(f,x,y,h);
+
+			/*
 			double tol = (acc+eps*yh.norm()) * Sqrt(h/(b-a));
 			double err = erv.norm();
 			if(err<=tol){ // accept step
@@ -68,6 +70,25 @@ public class ODE {
 				if (ylist != null) ylist.add(y);
 			}
 			h *= Min( Pow(tol/err,0.25)*0.95 , 2); // reajust stepsize
+			*/
+
+			double[] tol = new double[y.size + 1];
+			double err = erv.norm();
+
+			for(int i=0;i<y.size;i++)
+				tol[i]=(acc+eps*Abs(yh[i]))*Sqrt(h/(b-a));
+			bool ok=true;
+			for(int i=0;i<y.size;i++)
+				if(erv[i] >= tol[i]) ok=false;
+			if(ok){
+				x+=h; y=yh;
+				if (xlist != null) xlist.add(x);
+				if (ylist != null) ylist.add(y);
+			}
+			double factor = tol[0]/Abs(erv[0]);
+			for(int i=1;i<y.size;i++) factor=Min(factor,tol[i]/Abs(erv[i]));
+			h *= Min( Pow(factor,0.25)*0.95 ,2);
+
 		}while(true);
 	}//driver
 
@@ -92,12 +113,24 @@ public class ODE {
 		return dydt;
 	}
 
+	public static vector lotkavolterra_ode(double t, vector z) {
+		double a = 1.5;
+		double b = 1;
+		double c = 3;
+		double d = 1;
+
+		double x = z[0];
+		double y = z[1];
+
+		return new vector(a*x - b*x*y, -c*y + d*x*y);
+	}
+
 
   public static void Main() {
 		genlist<double> a = new genlist<double>();
 		genlist<vector> b = new genlist<vector>();
 
-		vector ys = driver(pendulum_ode, 0, new vector(PI - 0.1, 0.0), 101, xlist: a, ylist: b);
+		vector ys = driver(pendulum_ode, 0, new vector(10.0, 5.0), 15, xlist: a, ylist: b);
 
 		for (int i = 0; i < a.size; i++) {
 			Console.WriteLine($"{a[i]},{b[i][0]},{b[i][1]}");
