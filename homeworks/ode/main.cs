@@ -60,20 +60,8 @@ public class ODE {
 
 			if(x+h>b) h=b-x;               /* last step should end at b */
 			var (yh,erv) = rkstep12(f,x,y,h);
-
-			/*
-			double tol = (acc+eps*yh.norm()) * Sqrt(h/(b-a));
-			double err = erv.norm();
-			if(err<=tol){ // accept step
-				x+=h; y=yh;
-				if (xlist != null) xlist.add(x);
-				if (ylist != null) ylist.add(y);
-			}
-			h *= Min( Pow(tol/err,0.25)*0.95 , 2); // reajust stepsize
-			*/
-
-			double[] tol = new double[y.size + 1];
-			double err = erv.norm();
+			double[] tol = new double[y.size];
+			// double err = erv.norm();
 
 			for(int i=0;i<y.size;i++)
 				tol[i]=(acc+eps*Abs(yh[i]))*Sqrt(h/(b-a));
@@ -113,6 +101,7 @@ public class ODE {
 		return dydt;
 	}
 
+
 	public static vector lotkavolterra_ode(double t, vector z) {
 		double a = 1.5;
 		double b = 1;
@@ -126,14 +115,55 @@ public class ODE {
 	}
 
 
-  public static void Main() {
+	public static vector acceleration(vector r1, vector r2, double m1=1, double m2=1, double G=100000) {
+		return G*m1/Math.Pow((r2-r1).norm(), 3) * (r2 - r1);
+	}
+
+
+	public static (vector, vector, vector) pos_to_vec(vector y, int offset) {
+		vector r1 = new vector(y[0 + offset], y[1 + offset]);
+		vector r2 = new vector(y[2 + offset], y[3 + offset]);
+		vector r3 = new vector(y[4 + offset], y[5 + offset]);
+
+		return (r1, r2, r3);
+	}
+
+
+	public static vector threebodyproblem_ode(double t, vector y) {
+		(vector r1, vector r2, vector r3) = pos_to_vec(y, 0);
+		(vector g1, vector g2, vector g3) = pos_to_vec(y, 6);
+
+		vector v1 = acceleration(r1, r2) + acceleration(r1, r3);
+		vector v2 = acceleration(r2, r1) + acceleration(r2, r3);
+		vector v3 = acceleration(r3, r1) + acceleration(r3, r2);
+
+		double[] ret = {g1[0], g1[1], g2[0], g2[1], g3[0], g3[1], v1[0], v1[1], v2[0], v2[1], v3[0], v3[1]};
+		return new vector(ret);
+	}
+
+
+  public static void Main(string[] args) {
 		genlist<double> a = new genlist<double>();
 		genlist<vector> b = new genlist<vector>();
 
-		vector ys = driver(pendulum_ode, 0, new vector(10.0, 5.0), 15, xlist: a, ylist: b);
+		double factor = 100.0;
+		double t0 = 0.0;
+		double tf = 10000.0;
+
+		vector r1 = new vector(0.746156*factor, 0);
+		vector r2 = new vector(-0.373078*factor, 0.238313*factor);
+		vector r3 = new vector(-0.373078*factor, -0.238313*factor);
+
+		vector v1 = new vector(0, 0.324677*factor);
+		vector v2 = new vector(0.764226*factor, -0.162339*factor);
+		vector v3 = new vector(-0.764226*factor, -0.162339*factor);
+
+		double[] input = {r1[0], r1[1], r2[0], r2[1], r3[0], r3[1], v1[0], v1[1], v2[0], v2[1], v3[0], v3[1]};
+
+		vector ys = driver(threebodyproblem_ode, t0, new vector(input), tf, xlist: a, ylist: b);
 
 		for (int i = 0; i < a.size; i++) {
-			Console.WriteLine($"{a[i]},{b[i][0]},{b[i][1]}");
-		} 
+			Console.WriteLine($"{a[i]},{b[i][0]},{b[i][1]},{b[i][2]},{b[i][3]},{b[i][4]},{b[i][5]}");
+		}
   }
 }

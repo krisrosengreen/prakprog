@@ -5,7 +5,6 @@ MAKEDLL = mcs -t:library -out:$@ $(filter %.cs,$^)
 
 Out.txt: main.exe
 	mono $< > $@
-	cat $@ 
 
 main.exe: main.cs matrix.dll
 	mcs $< $(DLLS)
