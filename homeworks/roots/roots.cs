@@ -26,7 +26,7 @@ public class rootfinder {
     return jacobi;
   }
 
-  public static vector newton_stepdx(Func<vector, vector> f, vector x, double epsilon) {
+  static vector newton_stepdx(Func<vector, vector> f, vector x, double epsilon) {
     matrix jacobian = jacobi(f, x, epsilon);
 
     QRGS qrgs = new QRGS(jacobian);

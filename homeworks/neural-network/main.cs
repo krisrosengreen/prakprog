@@ -122,14 +122,14 @@ class main {
   public static void Main() {
     ann a = new ann(30);
 
-    (vector x, vector y) = get_training_data(180, g);
+    (vector x, vector y) = get_training_data(20, g);
 
     Console.WriteLine($"Cost before training: {a.cost(x, y)}");
 
     a.train(x, y);
 
     Console.WriteLine($"Cost after train (Same data): {a.cost(x, y)}");
-    (x, y) = get_training_data(180, g);
+    (x, y) = get_training_data(40, g);
     Console.WriteLine($"Cost after train (New data): {a.cost(x, y)}");
   }
 }
