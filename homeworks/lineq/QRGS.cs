@@ -55,10 +55,15 @@ public class QRGS{
     
     matrix id = matrix.id(this.R.size2);
     matrix Rinv = new matrix(this.R.size1, this.R.size2);
+
+    for (int i = 0; i < this.R.size2; i++) {
+      Rinv[i] = QRGS.backsub(this.R, id[i]);
+    }
+    /*
     Rinv[0] = QRGS.backsub(this.R, id[0]);
     Rinv[1] = QRGS.backsub(this.R, id[1]);
     Rinv[2] = QRGS.backsub(this.R, id[2]);
-    
+    */
     //Step 2
 
     matrix Ainv = Rinv*this.Q.T;
