@@ -5,7 +5,7 @@ CSFILES = $(filter %.cs,$^)
 MAKEDLL = mcs -t:library -out:$@ $(CSFILES)
 
 Out.txt: main.exe
-	mono $< > $@
+	mono $< < data.txt > $@
 	cat $@ 
 
 main.exe: main.cs matrix.dll minimum.cs
