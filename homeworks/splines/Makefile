@@ -10,13 +10,10 @@ Out.txt: main.exe
 	mono $< > $@
 	cat $@ 
 
-main.exe: matrix.dll integrate.dll $(CSFILES)
+main.exe: matrix.dll $(CSFILES)
 	mcs -out:main.exe $(CODE) $(DLLS)
 
 matrix.dll: $(MATRIXCODE)
-	$(MAKEDLL)
-
-integrate.dll: ../quadratures/integration.cs
 	$(MAKEDLL)
 
 clean:

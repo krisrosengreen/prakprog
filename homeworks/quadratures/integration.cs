@@ -39,4 +39,18 @@ class integration {
   }
 
 
+  public static double clenshawcurtis(
+      Func<double, double> f,
+      double a,
+      double b,
+      double delta=0.001,
+      double epsilon=0.001,
+      double f2=double.NaN,
+      double f3=double.NaN
+      ) {
+
+    Func<double, double> var_transform = x => f((a+b)/2.0 + (b-a)/2.0 *Cos(x)) * Sin(x)*(b-a)/2;
+
+    return integrate(var_transform, 0, PI, delta, epsilon, f2, f3);
+  }
 }

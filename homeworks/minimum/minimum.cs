@@ -11,6 +11,7 @@ public class minimum {
     return (f(x + dx) - f(x))/finite_step;
   }
 
+
   public static double multivar_finite_diff(Func<vector, double> f, vector x, int i, int j) {
     // Using: https://en.wikipedia.org/wiki/Finite_difference
     double h = 1e-8;
@@ -29,6 +30,7 @@ public class minimum {
     return (f(x+pp) - f(x+pm) - f(x+mp) + f(x+mm))/(4*h*k);
   }
 
+
   public static matrix numerical_hessian(Func<vector, double> f, vector point) {
     matrix H = new matrix(point.size, point.size);
 
@@ -41,6 +43,7 @@ public class minimum {
     return H;
   }
 
+
   public static vector gradient(Func<vector, double> f, vector point) {
     vector grad = new vector(point.size);
 
@@ -50,6 +53,7 @@ public class minimum {
 
     return grad;
   }
+
 
   public static vector qnewton(
     Func<vector, double> f,
@@ -65,7 +69,7 @@ public class minimum {
       vector dx = -B*gradient(f, x);
       
       double lambda = 1;
-      while (true) {//Line search
+      while (true) {  // Line search
         if (f(x + lambda*dx) < f(x)) {
           x += lambda*dx;
           // UPDATE HESSIAN. Calculate delta B
