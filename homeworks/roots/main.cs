@@ -15,8 +15,12 @@ class functions {
 
 
 public class main {
-
   public static void Main() {
+    partB();
+  }
+
+
+  static void partA() {
     vector x0 = new vector(30.0, 30.0);
 
     vector root = rootfinder.newton(functions.rosenbrockvalley, x0, 0.00001);
@@ -26,4 +30,8 @@ public class main {
     functions.rosenbrockvalley(root).print();
   }
 
+
+  static void partB() {
+    hydrogen.find_hydrogen_root();  
+  }
 }

@@ -1,15 +1,19 @@
 MATLIB = ../../matlib
-MATRIXDIR = $(MATLIB)/matrix
+MATRIXLIB = $(MATLIB)/matrix
+MATRIXCODE = $(MATRIXLIB)/vector.cs $(MATRIXLIB)/matrix.cs
 DLLS = $(addprefix -r:,$(filter %.dll,$^))
-MAKEDLL = mcs -t:library -out:$@ $(filter %.cs,$^)
+CODE = $(filter %.cs,$^)
+CSFILES = $(filter %.cs,$(shell ls))
+MAKEDLL = mcs -t:library -out:$@ $(CODE)
 
 Out.txt: main.exe
 	mono $< > $@
+	cat $@ 
 
-main.exe: main.cs matrix.dll
-	mcs $< $(DLLS)
+main.exe: matrix.dll $(CSFILES)
+	mcs -out:main.exe $(CODE) $(DLLS)
 
-matrix.dll: $(MATRIXDIR)/matrix.cs $(MATRIXDIR)/vector.cs
+matrix.dll: $(MATRIXCODE)
 	$(MAKEDLL)
 
 clean:

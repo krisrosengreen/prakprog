@@ -6,16 +6,18 @@ CSFILES = $(filter %.cs,$(shell ls))
 MAKEDLL = mcs -t:library -out:$@ $(CODE)
 
 Out.txt: main.exe
-	mono $< > $@
-	cat $@ 
+	mono $<
 
-main.exe: matrix.dll qrgs.dll $(CSFILES)
-	mcs $(CODE) $(DLLS)
+main.exe: matrix.dll qrgs.dll ode.dll $(CSFILES)
+	mcs -out:main.exe $(CODE) $(DLLS)
 
 matrix.dll: $(MATRIXLIB)/matrix.cs $(MATRIXLIB)/vector.cs
 	$(MAKEDLL)
 
 qrgs.dll: ../lineq/QRGS.cs matrix.dll
+	$(MAKEDLL) $(DLLS)
+
+ode.dll: ../ode/ode.cs matrix.dll
 	$(MAKEDLL) $(DLLS)
 
 clean:

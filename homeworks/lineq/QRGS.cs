@@ -1,4 +1,6 @@
 using static matrix;
+using System;
+
 
 public class QRGS{
   public matrix Q,R;
@@ -7,30 +9,34 @@ public class QRGS{
     R=new matrix(A.size2,A.size2);
     /* orthogonalize Q and fill-in R */
     for (int i=0; i < A.size2; i++){
-      R[i,i] = Q[i].norm(); 
-      Q[i] /= R[i,i];
+      R[i, i] = Q[i].norm(); 
+      Q[i] /= R[i, i];
       for (int j=i+1; j < A.size2; j++){
-        R[i,j] = Q[i].dot(Q[j]);
-        Q[j] -= Q[i]*R[i,j];
+        R[i, j] = Q[i].dot(Q[j]);
+        Q[j] -= Q[i]*R[i, j];
       }
     }
   }
 
+
   public vector solve(vector b){
-    vector x = QRGS.backsub(this.R, this.Q.T*b);
+    vector x = QRGS.backsub(R, Q.T*b);
+
     return x;
   }
+
 
   public static vector backsub (matrix U, vector b) {
     vector c = b.copy();
 
     for (int i=c.size-1; i >=0; i--){
       double sum=0;
-      for (int k=i+1; k<c.size; k++) sum+=U[i,k]*c[k];
-      c[i]=(c[i]-sum)/U[i,i];
+      for (int k=i+1; k<c.size; k++) sum += U[i, k]*c[k];
+      c[i]=(c[i]-sum)/U[i, i];
     }
     return c;
   }
+
 
   public double det() {
     double prodded = 1;
@@ -39,6 +45,7 @@ public class QRGS{
     }
     return prodded;
   }
+
 
   public matrix inverse() {
     // Ax=QRx=b
