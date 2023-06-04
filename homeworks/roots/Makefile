@@ -6,7 +6,8 @@ CSFILES = $(filter %.cs,$(shell ls))
 MAKEDLL = mcs -t:library -out:$@ $(CODE)
 
 Out.txt: main.exe
-	mono $<
+	mono $< > Out.txt
+	cat Out.txt
 
 main.exe: matrix.dll qrgs.dll ode.dll $(CSFILES)
 	mcs -out:main.exe $(CODE) $(DLLS)

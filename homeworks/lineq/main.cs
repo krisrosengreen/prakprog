@@ -35,7 +35,7 @@ public class MainClass {
       int columns_count = rows[0].Split(split_delimiters, split_options).Length;
 
       matrix A = new matrix(rows_count, columns_count);
-
+      
       for (int i = 0; i < rows.Count; i++) {
         var split = rows[i].Split(split_delimiters, split_options);
         for (int j = 0; j < columns_count; j++) {
