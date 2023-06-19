@@ -1,20 +1,22 @@
-MATLIB = ~/prakprog/matlib
-MATRIXDIR = $(MATLIB)/matrix
-CMATHDIR = $(MATLIB)/complex
+MATLIB = ../../matlib
+MATRIXLIB = $(MATLIB)/matrix
+MATRIXCODE = $(MATRIXLIB)/vector.cs $(MATRIXLIB)/matrix.cs
 DLLS = $(addprefix -r:,$(filter %.dll,$^))
-MAKEDLL = mcs -t:library -out:$@ $(filter %.cs,$^)
+CODE = $(filter %.cs,$^)
+CSFILES = $(filter %.cs,$(shell ls))
+MAKEDLL = mcs -t:library -out:$@ $(CODE)
+
+convergence.png: Out.txt
+	gnuplot convergence.gnu
 
 Out.txt: main.exe
-	mono main.exe < inputfile > Out.txt
-	cat Out.txt
+	mono $< > $@
+	cat $@ 
 
-main.exe: main.cs matrix.dll cmath.dll
-	mcs main.cs $(DLLS)
+main.exe: matrix.dll $(CSFILES)
+	mcs -out:main.exe $(CODE) $(DLLS)
 
-matrix.dll: $(MATRIXDIR)/matrix.cs $(MATRIXDIR)/vector.cs
-	$(MAKEDLL) 
-
-cmath.dll: $(CMATHDIR)/cmath.cs $(CMATHDIR)/complex.cs
+matrix.dll: $(MATRIXCODE)
 	$(MAKEDLL)
 
 clean:

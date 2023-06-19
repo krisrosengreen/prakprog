@@ -1,62 +1,73 @@
 using System;
-using static System.Math;
-using static matrix;
-using static cmath;
+// Use random package to randomize matrix elements
+using static System.Random;
 
+public class exercises{
+  public static void partA() {
+    int size = 5;
+    matrix original = new matrix(size, size);
+    matrix Id = new matrix(size, size); 
+    Id.setid();
 
-public class EVD{
-  public vector w;
-  public matrix V;
+    // Randomize matrix A
+    Random rand = new Random();
+    for(int i=0;i<size;i++)
+    {
+      for(int j=0;j<i+1;j++) {
+        double a = rand.NextDouble();
+        original[i,j] = a;
+        original[j,i] = a;
+      }
+    }
 
-  public EVD(matrix M){
-    matrix A=M.copy();
-    V=matrix.id(M.size1);
-    w=new vector(M.size1);
-    /* run Jacobi rotations on A and update V */
-    /* copy diagonal elements into w */
+    matrix A = original.copy();
+
+    EVD.cyclic(A, Id);
+    original.print();
+    A.print();
   }
 
-  static void timesJ(matrix A, int p, int q, double theta){
-    double c=cos(theta),s=sin(theta);
-    for(int i=0;i<A.size1;i++){
-      double aip=A[i,p],aiq=A[i,q];
-      A[i,p]=c*aip-s*aiq;
-      A[i,q]=s*aip+c*aiq;
+  public static void partB() {
+    // NUMERICAL CALCULATION
+    double rmax = 10;
+    double dr = 0.3;
+
+    matrix H = hydrogen.Hamiltonian(rmax, dr);
+  
+    (matrix Hdiag, matrix eigvecs, vector eigvals) = hydrogen.eigen(H);
+
+    double E_lowest = hydrogen.lowest_val(eigvals);
+
+    Console.WriteLine($"# Lowest E value {E_lowest}");
+
+
+    // CONVERGENCE
+    // rmax fixed, variable dr
+
+    double fixrmax = 10.0;
+    Console.WriteLine("\trmax_fix:");
+    for (int i = 1; i < 10; i++) {
+      double step = (float) i / 10.0;
+      double E = hydrogen.lowest_energy(fixrmax, step);
+
+      Console.WriteLine($"{step},{E}");
+    }
+
+    // dr fixed, variable rmax
+    double fixdr = 0.3;
+    Console.WriteLine("\n\n\tdr_fix:");
+    for (int i = 1; i < 10; i++) {
+      double var_rmax = (float) i ;
+      double E = hydrogen.lowest_energy(var_rmax, fixdr);
+
+      Console.WriteLine($"{var_rmax},{E}");
     }
   }
+}
 
-  static void Jtimes(matrix A, int p, int q, double theta){
-    double c=cos(theta),s=sin(theta);
-    for(int j=0;j<A.size1;j++){
-      double apj=A[p,j],aqj=A[q,j];
-      A[p,j]= c*apj+s*aqj;
-      A[q,j]=-s*apj+c*aqj;
-      }
-  }
-
-  public void cyclic(matrix A, int n) {
-    bool changed;
-    do{
-      changed=false;
-      for(int p=0;p<n-1;p++)
-      for(int q=p+1;q<n;q++){
-        double apq=A[p,q], app=A[p,p], aqq=A[q,q];
-        double theta=0.5*Atan2(2*apq,aqq-app);
-        double c=Cos(theta),s=Sin(theta);
-        double new_app=c*c*app-2*s*c*apq+s*s*aqq;
-        double new_aqq=s*s*app+2*s*c*apq+c*c*aqq;
-        if(new_app!=app || new_aqq!=aqq) // do rotation
-          {
-          changed=true;
-          timesJ(A,p,q, theta); // A←A*J 
-          Jtimes(A,p,q,-theta); // A←JT*A 
-          timesJ(V,p,q, theta); // V←V*J
-          }
-      }
-    }while(changed);
-  }
-
+public class main {
   public static void Main() {
-
+    // exercises.partA();
+    exercises.partB();
   }
 }
