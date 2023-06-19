@@ -4,8 +4,8 @@ public class qspline{
 	vector x,y,b,c;
 	public qspline(vector xs, vector ys){
 	  /* copy xs,ys into x,y and build b,c */
-	  x = xs;
-	  y = ys;
+	  x = xs.copy();
+	  y = ys.copy();
 	}
 	public double evaluate(double z){
 	  /* evaluate the spline using x,y,b,c */
@@ -51,4 +51,58 @@ public class qspline{
 
     return sum;
   }
+}
+
+public class quadraticspline {
+	vector x,y,b,c;
+	public quadraticspline(vector xs, vector ys){
+	  x = xs.copy();
+	  y = ys.copy();
+
+	  int n = x.size;
+
+	  b = new vector(n - 1);
+	  c = new vector(n - 1);
+
+    vector p = new vector(n - 1);
+    vector h = new vector(n - 1);
+
+    for (int i = 0; i < n - 1; i++) {
+      h[i] = x[i+1] - x[i];
+      p[i] = (y[i + 1] - y[i]) / h[i];
+    }
+
+    for (int i = 0; i < n - 2; i++) {
+      c[i + 1] = (p[i + 1] - p[i] - c[i] * h[i]) / h[i + 1];
+    }
+
+    c[n - 2] /= 2;
+
+    for (int i = n - 3; i >= 0; i--) {
+      c[i] = (p[i + 1] - p[i] - c[i+1]*h[i+1])/h[i];
+    }
+
+    for (int i = 0; i < n - 1; i++) {
+      b[i] = p[i] - c[i]*h[i];
+    }
+	}
+	public double evaluate(double z){
+	  int n = x.size;
+	  if (z < x[0] || z > x[n - 1]) {
+	    throw new ArgumentException("z is outside the range of x.");
+	  }
+
+	  int i = 0, j = n - 1;
+
+	  while (j - i > 1) {
+	    int m = (i+j)/2;
+	    if (z > x[m])
+	      i = m;
+	    else
+	      j = m;
+	  }
+
+	  double h = z-x[i];
+	  return y[i] + h*(b[i] + h*c[i]);
+	}
 }
