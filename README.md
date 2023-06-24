@@ -12,7 +12,7 @@
 | 8  | Roots         | 6 | 3 | - |  9  |
 | 9  | Minimisation  | 6 | 3 | - |  9  |
 | 10 | NeuralNetwork | 6 | 3 | - |  9  |
-| | | | | |          total points: 81  |
+| | | | | |          total points: 91  |
 
 # Exam
 
