@@ -8,6 +8,17 @@ class data {
     return Cos(5*x - 1)*Exp(-x*x);
   }
 
+
+  public static double gp(double x) {
+    return Exp(-x*x)*(-5.0*Sin(5.0*x-1.0) - 2.0*x*Cos(5.0*x - 1.0));
+  }
+
+
+  public static double gpp(double x) {
+    return Exp(-x*x)*((4.0*x*x-27.0)*Cos(5.0*x-1.0)+20.0*x*Sin(5.0*x-1.0));
+  }
+
+
   public static (vector, vector) get_training_data(int num_points, Func<double, double> f) {
     Random rand = new Random();
 
@@ -16,8 +27,8 @@ class data {
 
     for (int i = 0; i < num_points; i++) {
       double rx = rand.NextDouble()*2 - 1;
-      yarr[i] = rx;
-      xarr[i] = f(rx);
+      xarr[i] = rx;
+      yarr[i] = f(rx);
     }
 
     return (new vector(xarr), new vector(yarr));
@@ -27,12 +38,12 @@ class data {
 class main {
   public static void evaluate_train(ann model, Func<double, double> func_train) {
     (vector x, vector y) = data.get_training_data(20, func_train);
-    Console.WriteLine($"Cost before training: {model.cost(x, y)}");
+    Console.WriteLine($"# Cost before training: {model.cost(x, y)}");
     model.train(x, y);
 
-    Console.WriteLine($"Cost after train (Same data): {model.cost(x, y)}");
+    Console.WriteLine($"# Cost after train (Same data): {model.cost(x, y)}");
     (x, y) = data.get_training_data(40, func_train);
-    Console.WriteLine($"Cost after train (New data): {model.cost(x, y)}");
+    Console.WriteLine($"# Cost after train (New data): {model.cost(x, y)}");
   }
 
   static void partA() {
@@ -41,37 +52,47 @@ class main {
   }
 
   static void partB() {
-    ann a = new ann(30);
-    (vector x, vector y) = data.get_training_data(20, data.g);
+    ann a = new ann(50);
+    (vector x, vector y) = data.get_training_data(200, data.g);
     a.train(x, y);
-
-    /*
-    double val_eval = 0.5;
-
-    Console.WriteLine("\n\nDERIVATIVE AND ANTI-DERIVATIVE");
-    Console.WriteLine($"Func {a.response(val_eval)}");
-    Console.WriteLine($"Derivative {a.response_p(val_eval)}");
-    Console.WriteLine($"Double Derivative {a.response_pp(val_eval)}");
-    Console.WriteLine($"Integral {a.response_int(val_eval)}");
-    */
 
     double min = -1;
     double max = 1;
-    double step = 0.1;
+    int points = 100;
+    double step = 2.0/ (double) points;
     int count = (int) Floor((max-min)/step);
 
+    Console.WriteLine("Actual");
     for (int i = 0; i < count; i++) {
       double val = min + step*i;
-      double vf = a.response(val);
-      double vfp = a.response_p(val);
-      double vfpp = a.response_pp(val);
-      double vfint = a.response_int(val);
-      double vf_actual = data.g(val);
-      Console.WriteLine($"{val},{vf},{vfp},{vfpp},{vfint},{vf_actual}");
+      double fval = data.g(val);
+      Console.WriteLine($"{val},{fval}");
+    }
+
+    Console.WriteLine("\n\nResponse");
+    for (int i = 0; i < count; i++) {
+      double val = min + step*i;
+      double fval = a.response(val);
+      Console.WriteLine($"{val},{fval}");
+    }
+
+    Console.WriteLine("\n\nResponsep");
+    for (int i = 0; i < count; i++) {
+      double val = min + step*i;
+      double fval = a.response_p(val) - data.gp(val);
+      Console.WriteLine($"{val},{fval}");
+    }
+
+    Console.WriteLine("\n\nResponsepp");
+    for (int i = 0; i < count; i++) {
+      double val = min + step*i;
+      double fval = a.response_pp(val) - data.gpp(val);
+      Console.WriteLine($"{val},{fval}");
     }
   }
 
   public static void Main() {
+    // tester.test();
     partB();
   }
 }

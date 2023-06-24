@@ -10,7 +10,7 @@ public class ann{
   Func<double, double> fint = x => -0.5*Exp(-x*x); 
   Func<double, double> f = x => x*Exp(-x*x); /* activation function */
   Func<double, double> fp = x => Exp(-x*x) - 2*x*x*Exp(-x*x);
-  Func<double, double> fpp = x => -2.0*x*Exp(-x*x) - 4*x*Exp(-x*x) - 2*x*x*Exp(-x*x)*(-2*x);
+  Func<double, double> fpp = x => 2.0*Exp(-x*x)*x*(2.0*x*x - 3.0);
   matrix p; /* network parameters (ai, bi, wi) */
 
 
@@ -43,26 +43,7 @@ public class ann{
   }
 
 
-  public double response_p(double x) {
-    double resp = 0;
-    for (int i = 0; i < n; i ++) {
-      resp += fp((x - p[i, 0])/p[i, 1])*p[i, 2]; 
-    }
-    
-    return resp;
-  }
-
-
-  public double response_pp(double x) {
-    double resp = 0;
-    for (int i = 0; i < n; i ++) {
-      resp += fpp((x - p[i, 0])/p[i, 1])*p[i, 2]; 
-    }
-    
-    return resp;
-  }
-
-
+  // Integral
   public double response_int(double x) {
     double resp = 0;
     for (int i = 0; i < n; i ++) {
@@ -81,6 +62,28 @@ public class ann{
     }
 
     return new vector(resp);
+  }
+
+
+  // Firest derivative
+  public double response_p(double x) {
+    double resp = 0;
+    for (int i = 0; i < n; i ++) {
+      resp += fp((x - p[i, 0])/p[i, 1])*p[i, 2]/p[i, 1]; 
+    }
+    
+    return resp;
+  }
+
+
+  // Second derivative
+  public double response_pp(double x) {
+    double resp = 0;
+    for (int i = 0; i < n; i ++) {
+      resp += fpp((x - p[i, 0])/p[i, 1])*p[i, 2]/p[i, 1]/p[i, 1]; 
+    }
+    
+    return resp;
   }
 
 
