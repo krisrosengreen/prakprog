@@ -40,14 +40,30 @@ public class montecarlo {
     return q;
   }
 
-  public static void halton(int n,int d,double[] x){
+  // Implement a quasi-random monte-carlo integrator using the halton function
+  /*public static (double, double) quasimc(Func<vector, double> f, vector a, vector b, int N) {
+    int dim = a.size;
+    double V=1;
+
+    for (int i=0; i < dim; i++) {
+      V*=b[i]-a[i];
+    }
+
+
+  }*/
+
+  public static vector halton(int n,int d){
     int[] baseValues = new int[]{2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61};
     int maxd = baseValues.Length;
+
+    vector x = new vector(d);
 
     Debug.Assert(d <= maxd);
     for (int i = 0; i < d; i++) {
       x[i] = corput(n, baseValues[i]);
     }
+
+    return x;
   }
 }
 

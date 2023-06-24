@@ -47,7 +47,7 @@ public class ann{
   public double response_int(double x) {
     double resp = 0;
     for (int i = 0; i < n; i ++) {
-      resp += fint((x - p[i, 0])/p[i, 1])*p[i, 2]; 
+      resp += fint((x - p[i, 0])/p[i, 1])*p[i, 2]*p[i, 1]; 
     }
     
     return resp;

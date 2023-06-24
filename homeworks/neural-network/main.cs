@@ -89,6 +89,13 @@ class main {
       double fval = a.response_pp(val) - data.gpp(val);
       Console.WriteLine($"{val},{fval}");
     }
+
+    Console.WriteLine("\n\nIntegral");
+    for (int i = 0; i < count; i++) {
+      double val = min + step*i;
+      double fval = a.response_int(val);
+      Console.WriteLine($"{val},{fval}");
+    }
   }
 
   public static void Main() {

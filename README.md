@@ -11,8 +11,8 @@
 | 7  | MonteCarlo    | 6 | - | - |  6  |
 | 8  | Roots         | 6 | - | - |  6  |
 | 9  | Minimisation  | 6 | 3 | - |  9  |
-| 10 | NeuralNetwork | 6 | - | - |  6  |
-| | | | | |          total points: 82  |
+| 10 | NeuralNetwork | 6 | 3 | - |  9  |
+| | | | | |          total points: 85  |
 
 # Exam
 
