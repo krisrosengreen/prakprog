@@ -9,10 +9,10 @@
 | 5  | ODE           | 6 | 3 | - |  9  |
 | 6  | Integration   | 6 | 3 | - |  9  |
 | 7  | MonteCarlo    | 6 | - | - |  6  |
-| 8  | Roots         | 6 | - | - |  6  |
+| 8  | Roots         | 6 | 3 | - |  9  |
 | 9  | Minimisation  | 6 | 3 | - |  9  |
 | 10 | NeuralNetwork | 6 | 3 | - |  9  |
-| | | | | |          total points: 85  |
+| | | | | |          total points: 88  |
 
 # Exam
 
