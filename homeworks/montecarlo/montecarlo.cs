@@ -41,29 +41,46 @@ public class montecarlo {
   }
 
   // Implement a quasi-random monte-carlo integrator using the halton function
-  /*public static (double, double) quasimc(Func<vector, double> f, vector a, vector b, int N) {
-    int dim = a.size;
+  public static (double, double) quasimc(Func<vector, double> f, vector a, vector b, int N) {
+    int dim=a.size;
     double V=1;
 
-    for (int i=0; i < dim; i++) {
+    for(int i=0;i<dim;i++)  // Calculate total volume enclosed in integration
       V*=b[i]-a[i];
+    
+    double sum=0;
+    double sum2=0;
+    var x=new vector(dim);
+    var y=new vector(dim);
+
+    for(int i=0;i<N;i++){
+      halton(x, i, dim);
+      halton(y, i + 7, dim);
+
+      for(int k=0;k<dim;k++)
+      {
+        x[k]=a[k]+x[k]*(b[k]-a[k]);
+        y[k]=a[k]+y[k]*(b[k]-a[k]);
+      }
+
+      double fx=f(x);
+      double fy=f(y);
+      sum+=fx;
+      sum2+=fy;
     }
 
+    var result=(sum*V/N, Abs(sum*V/N-sum2*V/N));
+    return result;
+  }
 
-  }*/
-
-  public static vector halton(int n,int d){
+  public static void halton(vector x, int n,int d){
     int[] baseValues = new int[]{2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61};
     int maxd = baseValues.Length;
-
-    vector x = new vector(d);
 
     Debug.Assert(d <= maxd);
     for (int i = 0; i < d; i++) {
       x[i] = corput(n, baseValues[i]);
     }
-
-    return x;
   }
 }
 

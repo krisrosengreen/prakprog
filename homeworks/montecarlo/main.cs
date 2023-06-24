@@ -23,6 +23,8 @@ class integrals {
 
 class exercises {
   public static void partA() {
+    Console.WriteLine("Plain mc");
+
     (double area, double error) = montecarlo.plainmc(integrals.partA3integral, new vector(0.0, 0.0, 0.0), new vector(PI, PI, PI), 10000000);
 
     Console.WriteLine($"PartA3: Area {area} error {error}");
@@ -33,17 +35,22 @@ class exercises {
   }
 
   public static void partB() {
+    Console.WriteLine("Quasi random");
+    
+    (double area, double error) = montecarlo.plainmc(integrals.partA3integral, new vector(0.0, 0.0, 0.0), new vector(PI, PI, PI), 10000000);
 
+    Console.WriteLine($"PartA3: Area {area} error {error}");
+
+    (area, error) = montecarlo.plainmc(integrals.partA2integral, new vector(0.0), new vector(1.0), 100000);
+
+    Console.WriteLine($"PartA2: Area {area} error {error}");
   }
 }
 
 
 class main {
   public static void Main() {
-    // exercises.partA();
-    for (int i = 0; i < 10; i++) {
-      vector resp = montecarlo.halton(i,10);
-      resp.print();
-    }
+    exercises.partA();
+    exercises.partB();
   }
 }
