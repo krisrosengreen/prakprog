@@ -1,4 +1,5 @@
 using System;
+using static System.Math;
 using static System.Console;
 using static sfuns;
 
@@ -16,6 +17,7 @@ class MyClass {
         Write($"Gamma(2) = {gamma(2)}\n");
         Write($"Gamma(3) = {gamma(3)}\n");
         Write($"Gamma(10) = {gamma(10)}\n");
-    }
 
+        WriteLine($"Lngamma(10) = {logGamma(10)}");
+    }
 }

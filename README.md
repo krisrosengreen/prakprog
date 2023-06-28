@@ -1,5 +1,9 @@
 # Practical Programming and Numerical Methods
 
+This is for a course offered by Aarhus University.
+
+# Homework
+
 | #  | homework      | A | B | C | Σ   |
 | -- | ------------- | - | - | - | --- |
 | 1  | LinEq         | 6 | 3 | 1 | 10  |
@@ -13,6 +17,23 @@
 | 9  | Minimisation  | 6 | 3 | - |  9  |
 | 10 | NeuralNetwork | 6 | 3 | - |  9  |
 | | | | | |          total points: 91  |
+
+# Exercises
+
+| exercise | status |
+| -------- | ------ |
+| complex  | DONE   |
+| eosilon  | DONE   |
+| genlist  | DONE   |
+| git      | DONE   |
+| hello    | DONE   |
+| io       | DONE   |
+| math     | DONE   |
+| multiproc| DONE   |
+| plots    | DONE   |
+| vec      | DONE   |
+| posix    | DONE   |
+| wiki     | DONE   |
 
 # Exam
 

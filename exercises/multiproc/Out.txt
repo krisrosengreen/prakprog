@@ -1,21 +1,21 @@
-Thread done! sum 0.22291855318921 from 4001 to 5000 id 4
-Thread done! sum 0.18213822447914 from 5001 to 6000 id 5
-Thread done! sum 0.28739040983604 from 3001 to 4000 id 3
-Thread done! sum 0.133397464451691 from 7001 to 8000 id 7
-Thread done! sum 0.405048453015572 from 2001 to 3000 id 2
-Thread done! sum 0.133397464451691 from 7001 to 8000 id 7
-Thread done! sum 0.117664980374105 from 8001 to 9000 id 8
-Thread done! sum 0.405048453015572 from 2001 to 3000 id 2
-Thread done! sum 0.105254960297744 from 9001 to 10000 id 9
-Thread done! sum 0.405048453015572 from 2001 to 3000 id 2
-val = 0
-val = 0
-val = 0.405048453015572
-val = 0.28739040983604
-val = 0.22291855318921
-val = 0.18213822447914
-val = 0
-val = 0.133397464451691
-val = 0.117664980374105
-val = 0.105254960297744
-val = 0
+A
+real 0.27
+user 0.26
+sys 0.00
+A
+real 0.14
+user 0.28
+sys 0.00
+A
+real 0.15
+user 0.37
+sys 0.00
+A
+real 0.20
+user 0.57
+sys 0.00
+B
+Parrallel for sum = 13.589463254416
+real 0.51
+user 3.95
+sys 0.00
