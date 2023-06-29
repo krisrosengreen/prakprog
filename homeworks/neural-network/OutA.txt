@@ -1,0 +1,3 @@
+# Cost before training: 4.68818602109088
+# Cost after train (Same data): 0.0646207488853612
+# Cost after train (New data): 0.157473054028995

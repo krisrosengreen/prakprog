@@ -2,8 +2,54 @@ using System;
 using static ode;
 using static System.Math;
 
-public class main {
-  public static void Main(string[] args) {
+class exercises {
+	public static void partA() {
+		// u''=-u
+		genlist<double> a = new genlist<double>();
+		genlist<vector> b = new genlist<vector>();
+
+		double t0 = 0.0;
+		double tf = 10.0;
+
+		vector ys = driver(f_test_ode, t0, new vector(2.0, 1.0), tf, xlist: a, ylist: b);
+
+		Console.WriteLine("u''=-u");
+		for (int i = 0; i < a.size; i++) {
+			Console.WriteLine($"{a[i]},{b[i][0]}");
+		}
+
+		// pendulum
+		a = new genlist<double>();
+		b = new genlist<vector>();
+		Console.WriteLine("\n\npendulum");
+		ys = driver(pendulum_ode, t0, new vector(2.0, 1.0), tf, xlist: a, ylist: b);
+		for (int i = 0; i < a.size; i++) {
+			Console.WriteLine($"{a[i]},{b[i][0]}");
+		}
+	}
+
+	public static void partB() {
+		Console.WriteLine("Lotka-Volterra");
+		genlist<double> a = new genlist<double>();
+		genlist<vector> b = new genlist<vector>();
+
+		double t0 = 0.0;
+		double tf = 15.0;
+
+		vector ys = driver(lotkavolterra_ode, t0, new vector(10.0, 5.0), tf, xlist: a, ylist: b);
+
+		Console.WriteLine("x");
+		for (int i = 0; i < a.size; i++) {
+			Console.WriteLine($"{a[i]},{b[i][0]}");
+		}
+
+		Console.WriteLine("\n\ny");
+		for (int i = 0; i < a.size; i++) {
+			Console.WriteLine($"{a[i]},{b[i][1]}");
+		}
+	}
+
+	public static void partC() {
 		genlist<double> a = new genlist<double>();
 		genlist<vector> b = new genlist<vector>();
 
@@ -26,5 +72,15 @@ public class main {
 		for (int i = 0; i < a.size; i++) {
 			Console.WriteLine($"{a[i]},{b[i][0]},{b[i][1]},{b[i][2]},{b[i][3]},{b[i][4]},{b[i][5]}");
 		}
+	}
+}
+
+public class main {
+  public static void Main(string[] args) {
+  	if (args.Length > 0) {
+  		if (args[0] == "A") exercises.partA();
+  		else if (args[0] == "B") exercises.partB();
+  		else if (args[0] == "C") exercises.partC();
+  	}
   }
 }

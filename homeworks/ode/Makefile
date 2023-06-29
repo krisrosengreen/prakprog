@@ -6,8 +6,24 @@ CODE = $(filter %.cs,$^)
 CSFILES = $(filter %.cs,$(shell ls))
 MAKEDLL = mcs -t:library -out:$@ $(CODE)
 
-Out.txt: main.exe
-	mono $< > $@
+all: OutA.txt OutB.txt plotsA.png plotsB.png
+
+plotsA.png: OutA.txt plotA.gnu
+	gnuplot plotA.gnu
+
+plotsB.png: OutB.txt plotB.gnu
+	gnuplot plotB.gnu
+
+OutA.txt: main.exe
+	mono $< A > $@
+	cat $@ 
+
+OutB.txt: main.exe
+	mono $< B > $@
+	cat $@ 
+
+OutC.txt: main.exe
+	mono $< C > $@
 	cat $@ 
 
 main.exe: matrix.dll $(CSFILES)

@@ -35,7 +35,7 @@ class data {
   }
 }
 
-class main {
+class exercises {
   public static void evaluate_train(ann model, Func<double, double> func_train) {
     (vector x, vector y) = data.get_training_data(20, func_train);
     Console.WriteLine($"# Cost before training: {model.cost(x, y)}");
@@ -46,12 +46,12 @@ class main {
     Console.WriteLine($"# Cost after train (New data): {model.cost(x, y)}");
   }
 
-  static void partA() {
+  public static void partA() {
     ann a = new ann(30);
     evaluate_train(a, data.g);
   }
 
-  static void partB() {
+  public static void partB() {
     ann a = new ann(50);
     (vector x, vector y) = data.get_training_data(200, data.g);
     a.train(x, y);
@@ -79,14 +79,14 @@ class main {
     Console.WriteLine("\n\nResponsep");
     for (int i = 0; i < count; i++) {
       double val = min + step*i;
-      double fval = a.response_p(val) - data.gp(val);
+      double fval = a.response_p(val);
       Console.WriteLine($"{val},{fval}");
     }
 
     Console.WriteLine("\n\nResponsepp");
     for (int i = 0; i < count; i++) {
       double val = min + step*i;
-      double fval = a.response_pp(val) - data.gpp(val);
+      double fval = a.response_pp(val);
       Console.WriteLine($"{val},{fval}");
     }
 
@@ -97,9 +97,18 @@ class main {
       Console.WriteLine($"{val},{fval}");
     }
   }
+}
 
-  public static void Main() {
+class main {
+
+  public static void Main(string[] args) {
+    if (args.Length > 0) {
+      if (args[0] == "A") {
+        exercises.partA();
+      } else if (args[0] == "B") {
+        exercises.partB();
+      }
+    }
     // tester.test();
-    partB();
   }
 }

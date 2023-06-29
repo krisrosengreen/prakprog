@@ -57,18 +57,20 @@ class funcs {
   }
 }
 
-public class main {
-  static void partA() {
-    vector xmin = minimum.qnewton(funcs.rosenbrock, new vector(-3.0, -3.0), 0.001);
+public class exercises {
+  public static void partA() {
+    Console.WriteLine("Minimum to rosenbrock valley function");
+    vector xmin = minimum.qnewton(funcs.rosenbrock, new vector(-3.0, -3.0), 0.001,printsteps:true);
     xmin.print();
     Console.WriteLine($"{funcs.rosenbrock(xmin)}");
 
-    xmin= minimum.qnewton(funcs.himmelblau, new vector(2), 0.001);
+    Console.WriteLine("Minimum to himmelblau function");
+    xmin= minimum.qnewton(funcs.himmelblau, new vector(2), 0.001, printsteps:true);
     xmin.print();
     Console.WriteLine($"{funcs.himmelblau(xmin)}");
   }
 
-  static void partB() {
+  public static void partB() {
     var energy = new genlist<double>();
     var signal = new genlist<double>();
     var error = new genlist<double>();
@@ -86,10 +88,32 @@ public class main {
     Func<vector, double> minimizer = x => funcs.breitwignier_deviation(energy, signal, error, x);
 
     vector xmin = minimum.qnewton(minimizer, new vector(100.0,100.0,100.0), 0.001);
-    xmin.print();
-  }
 
-  public static void Main() {
-    partB();
+    Console.WriteLine($"# Fit: A {xmin[0]} gamma {xmin[1]} m {xmin[2]}");
+
+    Console.WriteLine("Experimental results");
+    for (int i = 0; i < energy.size; i++) {
+      Console.WriteLine($"{energy[i]},{signal[i]}");
+    }
+
+    Console.WriteLine("\n\nFit");
+    for (int i = 0; i < energy.size; i++) {
+      Console.WriteLine($"{energy[i]},{funcs.breitwigner(xmin, energy[i])}");
+    }
+  }
+}
+
+public class main {
+
+  public static void Main(string[] args) {
+    if (args.Length > 0) {
+      if (args[0] == "A") {
+        exercises.partA();
+      }
+
+      if (args[0] == "B") {
+        exercises.partB();
+      }
+    }
   }
 }

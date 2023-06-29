@@ -6,5 +6,5 @@ set output "output.png"
 set key
 set yrange [-100:100]
 
-plot "Out.txt" using 1:2 index 0 w points, "Out.txt" using 1:2 index 1 w points, "Out.txt" using 1:2 index 2 w points, "Out.txt" using 1:2 index 3 w points, "Out.txt" using 1:2 index 4 w points
+plot "OutB.txt" using 1:2 index 0 w points, "Out.txt" using 1:2 index 1 w points, "Out.txt" using 1:2 index 2 w points, "Out.txt" using 1:2 index 3 w points, "Out.txt" using 1:2 index 4 w points
 

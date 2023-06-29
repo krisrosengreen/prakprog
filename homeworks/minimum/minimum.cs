@@ -58,18 +58,25 @@ public class minimum {
   public static vector qnewton(
     Func<vector, double> f,
     vector start,
-    double acc
+    double acc,
+    bool printsteps=false
   ) {
     matrix B  = new matrix(start.size, start.size);
     B.set_identity();
 
     vector x = start.copy();
 
+    int steps = 0;
+    int steps_linesearch = 0;
+    int steps_lambda = 0;
+
     while (gradient(f, x).norm() > acc) {
+      steps+=1;
       vector dx = -B*gradient(f, x);
       
       double lambda = 1;
       while (true) {  // Line search
+        steps_linesearch+=1;
         if (f(x + lambda*dx) < f(x)) {
           x += lambda*dx;
           // UPDATE HESSIAN. Calculate delta B
@@ -84,11 +91,16 @@ public class minimum {
         lambda /= 2.0;
 
         if (lambda < 1.0/1024.0){
+          steps_lambda+=1;
           x += lambda*dx;
           B.set_identity();
           break;
         }
       }
+    }
+
+    if (printsteps) {
+      Console.WriteLine($"steps {steps} steps linesearch {steps_linesearch} steps_lambda {steps_lambda}");
     }
 
     return x;
