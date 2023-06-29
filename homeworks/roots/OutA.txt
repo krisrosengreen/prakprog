@@ -1,0 +1,4 @@
+Result
+         1          1 
+function value at xmin
+  2.15e-09   7.75e-10 

@@ -29,8 +29,8 @@ public class rootfinder {
 
 
   static vector finite_differences(Func<vector, vector> f, vector x, int k) {
-    double dx = 1e-15;
     vector xdx = x.copy();
+    double dx = x.norm()*1e-13;
     xdx[k] += dx;
     vector gradient = (f(xdx) - f(x)) / dx;
 
@@ -43,7 +43,7 @@ public class rootfinder {
 
     matrix jacobi = new matrix(fv.size, x.size);
 
-    for (int i = 0; i < fv.size; i++) {
+    for (int i = 0; i < x.size; i++) {
       jacobi[i] = finite_differences(f, x, i);
     }
 

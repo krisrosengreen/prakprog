@@ -8,7 +8,7 @@ class integration {
     } else if (0 <= z && z <= 1) {
       return 2.0/Sqrt(PI) * integrate(x => Exp(-x*x), 0.0, z);
     } else {
-      return 1-2.0/Sqrt(PI) * integrate(t => Exp(-Pow(z+(1-t)/t, 2)/t /t), 0.0, 1.0);
+      return 1.0-2.0/Sqrt(PI) * integrate(t => Exp(-Pow(z+(1-t)/t, 2)/t /t), 0.0, 1.0);
     }
   }
 

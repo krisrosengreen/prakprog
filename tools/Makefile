@@ -6,7 +6,7 @@ MAKEDLL = mcs -t:library -out:$@ $(CODE)
 all: Out.txt pipe.dll
 
 pipe.dll: pipe.cs
-	mcs -t:library pipe.cs
+	mcs -t:library $@ 
 
 Out.txt: main.exe
 	mono $< < sin.txt > $@

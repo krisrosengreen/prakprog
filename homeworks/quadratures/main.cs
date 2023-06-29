@@ -28,25 +28,48 @@ class integrals {
   }
 }
 
-
-public class main {
-  public static void calculate_print(Func<double, double> f, double a, double b) {
+class exercises {
+  static void calculate_print(Func<double, double> f, double a, double b) {
     double val = integration.integrate(f, a, b);
     double err = integration.erf(val);
-    Console.WriteLine($"Value: {val} Error {err}\n");
+    Console.WriteLine($"# Value: {val} Error {err}");
   }
 
 
-  static void partA() {
+  public static void partA() {
     Func<double, double>[] ints = {integrals.sqrt, integrals.invsqrt, integrals.int3, integrals.int4};
 
+    Console.WriteLine("# Funcs in order sqrt, invsqrt, int3 int4");
     foreach (Func<double, double> func in ints) {
       calculate_print(func, 0, 1);   
+    }
+
+    Console.WriteLine("Erf");
+    double min = -5;
+    double max = 5;
+    int count = 40;
+    double step = (max - min)/(double) count;
+
+    for (int i = 0; i < count; i++) {
+      double x = min + i*step;
+      Console.WriteLine($"{x},{integration.erf(x)}");
+    }
+
+    (var xerr, var yerr, var _) = pipe.threecols();
+
+    Console.WriteLine("\n\nTable");
+    for (int i = 0; i < xerr.size; i++) {
+      Console.WriteLine($"{xerr[i]},{yerr[i]}");
+    }
+
+    Console.WriteLine("\n\nDifference");
+    for (int i = 0; i < xerr.size; i++) {
+      Console.WriteLine($"{xerr[i]},{yerr[i] - integration.erf(xerr[i])}");
     }
   }
 
 
-  static void partB() {
+  public static void partB() {
     Func<double,double>[] integs = {integrals.intB1, integrals.intB2};
 
     foreach(Func<double, double> func in integs) {
@@ -56,9 +79,14 @@ public class main {
       Console.WriteLine($"{val} {reg}");
     }
   }
+}
 
 
-  public static void Main() {
-    partB();
+public class main {
+  public static void Main(string[] args) {
+    if (args.Length > 0) {
+      if (args[0] == "A") exercises.partA();
+      else if (args[0] == "B") exercises.partB();
+    }
   }
 }

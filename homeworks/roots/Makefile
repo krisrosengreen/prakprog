@@ -5,9 +5,18 @@ CODE = $(filter %.cs,$^)
 CSFILES = $(filter %.cs,$(shell ls))
 MAKEDLL = mcs -t:library -out:$@ $(CODE)
 
-Out.txt: main.exe
-	mono $< > Out.txt
-	cat Out.txt
+all: OutA.txt OutB.txt wavefuncs.svg
+
+wavefuncs.svg: fig_hydrogen.gpi OutB.txt
+	gnuplot fig_hydrogen.gpi
+
+OutA.txt: main.exe
+	mono $< A > $@
+	cat $@
+
+OutB.txt: main.exe
+	mono $< B > $@
+	cat $@
 
 main.exe: matrix.dll qrgs.dll ode.dll $(CSFILES)
 	mcs -out:main.exe $(CODE) $(DLLS)

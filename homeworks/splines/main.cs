@@ -37,7 +37,12 @@ class exercises {
 
     qspline qs = new qspline(va, vb);
 
-    Console.WriteLine("Linterp");
+    Console.WriteLine("Sin");
+    for (int i = 0; i < a.size; i++) {
+      Console.WriteLine($"{a[i]},{b[i]}");
+    }
+
+    Console.WriteLine("\n\nLinterp");
 
     for (int i = 0; i < 60; i++) {
       double z = (double) i / 10.0;
@@ -45,7 +50,7 @@ class exercises {
       Console.WriteLine($"{z},{qs.linterp(z)}");
     }
 
-    Console.WriteLine("\n\nIntegral");
+    Console.WriteLine("\n\nIntegral+C");
 
     // Print -cos(x) by integrating sin(x) using qs
     for (int i = 0; i < 60; i++) {
@@ -54,6 +59,8 @@ class exercises {
       double integ = qs.linterpInteg(z);
       Console.WriteLine($"{z},{integ}");
     }
+
+
   }
 
   public static void partB() {

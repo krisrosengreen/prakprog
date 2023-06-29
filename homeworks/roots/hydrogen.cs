@@ -46,9 +46,9 @@ public class hydrogen {
     Func<double, vector, vector> E_H_difeq = (tt,y) => hydrogen_difeq(tt, y, x0[0]);
     ode.driver(E_H_difeq, rmin, new vector(rmin - rmin*rmin, 1-2*rmin), rmax, xlist: t, ylist: a);
 
-    Console.WriteLine("Solution");
+    Console.WriteLine("Wavefunction");
     for (int i = 0; i < t.size; i++) {
-      Console.WriteLine($"{t[i]} {a[i][0]} {a[i][1]}");
+      Console.WriteLine($"{t[i]},{a[i][0]},{a[i][1]}");
     }
 
     return x0[0];

@@ -1,4 +1,9 @@
+set datafile separator comma
+set key autotitle columnheader
+set key
 set terminal svg
 set terminal svg enhanced background rgb 'white'
-set output "figure.svg"
-plot "Out.txt" index 0 u 0:1 with lines, "Out.txt" index 0 using 0:2 with lines
+set output "wavefuncs.svg"
+
+
+plot "OutB.txt" using 1:2 index 0 with lines, "OutB.txt" using 1:2 index 1 with lines
