@@ -1,0 +1,5 @@
+Testing part A
+- (SUCCESS) A from EVD components
+- (SUCCESS) VT*V = I
+- (SUCCESS) VT*V = I
+- (SUCCESS) V.T * A * V = D

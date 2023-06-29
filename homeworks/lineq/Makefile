@@ -1,11 +1,17 @@
-MATLIB = ~/prakprog/matlib
+MATLIB = ../../matlib/
 MATRIXDIR = $(MATLIB)/matrix
 DLLS = $(addprefix -r:,$(filter %.dll,$^))
 MAKEDLL = mcs -t:library -out:$@ $(filter %.cs,$^)
 
+all: Test.txt Out.txt img.png out.times.data
+
 Out.txt: main.exe
 	mono main.exe < inputfile > Out.txt
 	cat Out.txt
+
+Test.txt: main.exe
+	mono $< test > $@
+	cat Test.txt
 
 img.png: out.times.data plot.gnu
 	gnuplot plot.gnu

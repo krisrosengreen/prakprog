@@ -1,10 +1,11 @@
 using System;
 using static System.Console;
 using static matrix;
+using static System.Random;
 using System.Linq;
 using System.Collections.Generic;
 
-public class MainClass {
+public class main {
 
   static matrix RandomMatrix(int size) {
     Random rnd = new Random();
@@ -71,6 +72,12 @@ public class MainClass {
       Write("Calculate the inverse!\n");
       qr.inverse();
     } else {
+      if (args[0] == "test") {
+        tester.testA();
+        tester.testB();
+        return;
+      }
+
       foreach(string arg in args) {
         if (arg.Contains("-size:")) {
           int size = int.Parse(arg.Split(":")[1]);
@@ -132,5 +139,82 @@ public class MainClass {
     testvec.print();
     b.print();
   }
+}
 
+public class tester {
+  public static void testA() {
+    Console.WriteLine("Test A");
+    int n = 12;
+    int m = 7;
+
+    Random random = new Random();
+  
+    matrix tall = new matrix(n, m);
+
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+        tall[i, j] = random.NextDouble();
+      }
+    }
+
+    QRGS qr = new QRGS(tall);
+
+    // Check that R is upper triangular
+    bool uppertriang = true;
+    for (int i = 1; i < qr.R.size1; i++) {
+      for (int j = 0; j < i; j++) {
+        if (qr.R[i, j] != 0) {
+          uppertriang = false;
+        }
+      }
+    }
+
+
+    print_test(uppertriang, "Test if R is upper triangular");
+    matrix QTQ = qr.Q.T*qr.Q;
+    QTQ.print();
+    matrix QR = qr.Q*qr.R;
+
+    matrix Id = new matrix(QTQ.size1, QTQ.size1);
+    Id.setid();
+
+    print_test(Id.approx(QTQ, 1e-4, 1e-4), "Q.T*Q = I");
+    print_test(tall.approx(qr.Q*qr.R), "QR=A");
+  }
+
+  public static void testB() {
+    Console.WriteLine("Test B"); 
+
+    int size = 30;
+
+    matrix sym = new matrix(size, size);
+
+    Random rand = new Random();
+
+    for (int i = 0; i < size; i++) {
+      for (int j = i; j < size; j++) {
+        double a = rand.NextDouble();
+        sym[i, j] = a;
+        sym[j, i] = a;
+      }
+    }
+
+    QRGS qr = new QRGS(sym);
+
+    matrix inv = qr.inverse();
+
+    matrix AB = inv*sym;
+
+    matrix Id = AB.copy();
+
+    print_test(Id.approx(AB), "AB=I");
+  }
+
+  static void print_test(bool cond, string message) {
+    if (cond) {
+      Console.WriteLine($" - (SUCCESS) {message}");
+    } else {
+      Console.WriteLine($" - (FAIL) {message}");
+    }
+  }
 }

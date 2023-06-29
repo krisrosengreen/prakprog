@@ -69,6 +69,15 @@ public class hydrogen {
     return H;
   }
 
+  public static vector rvalues(double rmax, double dr) {
+    int npoints = (int) (rmax/dr) - 1;
+    vector r = new vector(npoints);
+    for (int i=0; i < npoints; i++) {
+      r[i]=dr*(i+1);
+    }
+    return r;
+  }
+
   public static double lowest_val(vector v) {
     double lowest = v[0];
     for (int i = 1; i < v.size; i++) {
@@ -96,5 +105,22 @@ public class hydrogen {
     double E_lowest = lowest_val(eigenvals);
 
     return E_lowest;
+  }
+
+  public static vector lowest_wavefunction(double rmax, double dr) {
+    matrix H = Hamiltonian(rmax, dr);
+    (matrix e, matrix eigenvecs, vector eigenvals) = eigen(H);
+
+    int iLowestE = 0;
+    double lowestE = H[0, 0];
+
+    for (int i = 0; i < H.size1; i++) {
+      if (H[i, i] < lowestE) {
+        lowestE = H[i, i];
+        iLowestE = i;
+      }
+    }
+
+    return eigenvecs[iLowestE];
   }
 }

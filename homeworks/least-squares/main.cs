@@ -24,9 +24,11 @@ class data {
 
 public class main {
   static void partA() {
+    Console.WriteLine("Part A");
     (Func<double,double>[]funcs,vector x, vector y, vector dy) = data.radioactive_decay();
 
     (matrix cov, vector fit) = leastsquares.lsfit(funcs,x,y,dy);
+    Console.WriteLine("Fit");
     fit.print();
 
     // Table value of half-life of Ra224 is 3.631 days
@@ -34,10 +36,17 @@ public class main {
   }
 
   static void partB() {
+    Console.WriteLine("Part B");
     (Func<double,double>[]funcs,vector x, vector y, vector dy) = data.radioactive_decay();
 
     (matrix cov, vector fit) = leastsquares.lsfit(funcs,x,y,dy);
+    // Fit
+    Console.WriteLine("Fit");
     fit.print();
+
+    Console.WriteLine("Covariance matrix");
+    // Covariance matrix
+    cov.print();
 
     // Table value of half-life of Ra224 is 3.631 days
     Console.WriteLine($"Half-life: {Log(2.0)/fit[0]}");
@@ -51,6 +60,7 @@ public class main {
   }
 
   public static void Main() {
+    partA();
     partB();
   }
 }

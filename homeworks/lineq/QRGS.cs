@@ -63,7 +63,7 @@ public class QRGS{
     matrix id = matrix.id(this.R.size2);
     matrix Rinv = new matrix(this.R.size1, this.R.size2);
 
-    for (int i = 0; i < this.R.size2; i++) {
+    for (int i = 0; i < this.R.size1; i++) {
       Rinv[i] = QRGS.backsub(this.R, id[i]);
     }
     /*
