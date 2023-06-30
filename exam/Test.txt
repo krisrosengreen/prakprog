@@ -1,0 +1,4 @@
+ - (SUCCESS) Check A*x=b for solved x
+ - (SUCCESS) Check L^T*L=A
+ - (SUCCESS) A^-1*A=I
+ - (SUCCESS) Check det(A) is calculated correctly

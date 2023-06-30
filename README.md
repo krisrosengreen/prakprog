@@ -44,3 +44,5 @@ Exam project progress:
 - [x] Inverse matrix
 - [x] Linear equation solver
 - [x] Determinant
+
+As mentioned in the README.md file in the exam folder, I believe the exam project to be at a 10/10, given that the exam project description has been completed and done so well, with testing.
